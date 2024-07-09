@@ -284,11 +284,13 @@
           }
         );
         let traka = null;
+        let trakaL = null;
+        let trakaR = null;
 
         BABYLON.SceneLoader.ImportMesh(
           "",
           "",
-          "traka - 65.glb",
+          "traka - 65_2.glb",
           scene,
           (meshes, particleSystem, skeleton, animationGroups) => {
             meshes[0].scaling = new BABYLON.Vector3(-150, 150, 150);
@@ -298,6 +300,9 @@
             shadowGenerator.addShadowCaster(meshes[0]);
             meshes[0].receiveShadows = true;
             meshes[0].position.y = 30;
+
+            trakaR = [meshes[4], meshes[5]];
+            trakaL = [meshes[6], meshes[7]];
             console.log(meshes);
             console.log(meshes[6].material.albedoTexture.uOffset);
             for (let i = 0; i < meshes.length; i++) {
@@ -320,8 +325,80 @@
         let t = 0;
         scene.onBeforeRenderObservable.add(() => {
           t++;
-          if (traka != null) {
-            traka[6].material.albedoTexture.uOffset -= 0.1;
+          if (traka != null && skelleton != null && body != null) {
+            traka[1].material.albedoTexture.uOffset -= 0.1;
+
+            if (
+              orbitCamera.position.x < 476 &&
+              orbitCamera.position.x > -480 &&
+              orbitCamera.position.z < -48
+            ) {
+              for (let i = 0; i < trakaL.length; i++) {
+                trakaL[i].renderingGroupId = 1;
+              }
+              for (let i = 0; i < trakaR.length; i++) {
+                trakaR[i].renderingGroupId = 1;
+              }
+              for (let i = 0; i < skelleton.length; i++) {
+                skelleton[i].renderingGroupId = 3;
+              }
+              for (let i = 0; i < body.length; i++) {
+                body[i].renderingGroupId = 2;
+              }
+            } else {
+              for (let i = 0; i < trakaL.length; i++) {
+                trakaL[i].renderingGroupId = 3;
+              }
+              for (let i = 0; i < trakaR.length; i++) {
+                trakaR[i].renderingGroupId = 3;
+              }
+              for (let i = 0; i < skelleton.length; i++) {
+                skelleton[i].renderingGroupId = 2;
+              }
+              for (let i = 0; i < body.length; i++) {
+                body[i].renderingGroupId = 1;
+              }
+            }
+
+            if (
+              orbitCamera.position.x < -120 &&
+              orbitCamera.position.x > -500 &&
+              orbitCamera.position.z < 500 &&
+              orbitCamera.position.z > -400
+            ) {
+              // console.log("tu");
+              for (let i = 0; i < trakaL.length; i++) {
+                trakaL[i].renderingGroupId = 3;
+              }
+              for (let i = 0; i < trakaR.length; i++) {
+                trakaR[i].renderingGroupId = 1;
+              }
+              for (let i = 0; i < skelleton.length; i++) {
+                skelleton[i].renderingGroupId = 2;
+              }
+              for (let i = 0; i < body.length; i++) {
+                body[i].renderingGroupId = 1;
+              }
+            } else if (
+              orbitCamera.position.x < 510 &&
+              orbitCamera.position.x > 100 &&
+              orbitCamera.position.z < 460 &&
+              orbitCamera.position.z > -450
+            ) {
+              // console.log("tu");
+              for (let i = 0; i < trakaL.length; i++) {
+                trakaL[i].renderingGroupId = 1;
+              }
+              for (let i = 0; i < trakaR.length; i++) {
+                trakaR[i].renderingGroupId = 3;
+              }
+              for (let i = 0; i < skelleton.length; i++) {
+                skelleton[i].renderingGroupId = 2;
+              }
+              for (let i = 0; i < body.length; i++) {
+                body[i].renderingGroupId = 1;
+              }
+            }
           }
         });
 
